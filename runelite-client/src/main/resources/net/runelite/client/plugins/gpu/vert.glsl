@@ -25,14 +25,19 @@
 
 #version 400
 
+#define FOG_START 5000
+#define FOG_END 7000
+
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
 
 uniform float brightness;
+uniform int fogToggle;
 
 out ivec3 vPosition;
 out vec4 vColor;
 out vec4 vUv;
+out float vFogAmount;
 
 vec3 hslToRgb(int hsl) {
   int var5 = hsl/128;
@@ -110,6 +115,10 @@ vec3 hslToRgb(int hsl) {
   return rgb;
 }
 
+float fogFactorLinear(const float dist, const float start, const float end) {
+    return 1.0 - clamp((end - dist) / (end - start), 0.0, 1.0);
+}
+
 void main()
 {
   ivec3 vertex = VertexPosition.xyz;
@@ -122,4 +131,6 @@ void main()
   vPosition = vertex;
   vColor = vec4(rgb, 1.f - a);
   vUv = uv;
+  float fogDistance = length(vPosition.xyz) * fogToggle;
+  vFogAmount = fogFactorLinear(fogDistance, FOG_START, FOG_END);
 }

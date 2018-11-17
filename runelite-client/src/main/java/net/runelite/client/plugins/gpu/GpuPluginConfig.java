@@ -40,4 +40,24 @@ public interface GpuPluginConfig extends Config
 	{
 		return 25;
 	}
+
+	@ConfigItem(
+		keyName = "skyboxType",
+		name = "Skybox",
+		description = "Toggles whether to show a skybox"
+	)
+	default SkyboxType skyboxType()
+	{
+		return SkyboxType.DISABLED;
+	}
+
+	@ConfigItem(
+		keyName = "showFog",
+		name = "Show Fog",
+		description = "Toggles whether to show fog at the edge of world"
+	)
+	default boolean showFog()
+	{
+		return false;
+	}
 }
